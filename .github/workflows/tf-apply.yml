@@ -1,0 +1,84 @@
+name: 'CICD pipeline'
+on:
+  pull_request:
+    branches:
+    - main
+    paths-ignore:
+    - 'README.md'
+  workflow_dispatch:
+
+
+env:
+  ENV: dev
+  BUCKET_NAME: aws-aakash-dev-devops-state
+  DYNAMO_DB : aws-aakash-dev-devops-statelock
+  REGION : us-east-1
+
+# Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+defaults:
+  run:
+    shell: bash
+
+jobs:  
+  terraform:
+    name: 'create ceq web infra'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2       
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Run Terrascan
+          id: terrascan
+          uses: tenable/terrascan-action@main
+          with:
+            iac_type: 'terraform'
+            # iac_version: 'v14'
+            policy_type: 'aws'
+            only_warn: true
+            sarif_upload: true
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: terrascan.sarif
+
+
+    - name: Configure AWS credentials from Test account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{env.REGION}}   
+
+    - name: Setup Remote state
+      run: |
+        cd pre-req
+        chmod +x backend-script.sh
+        ./backend-script.sh $BUCKET_NAME $DYNAMO_DB $REGION
+        
+    - name: Terraform Init
+      run: terraform init -no-color -reconfigure -force-copy -backend-config="bucket=$BUCKET_NAME" -backend-config="key=${{ env.TF_VAR_STATE_FILE }}" -backend-config="dynamodb_table=$DYNAMO_DB" -backend-config="encrypt=true"
+      env:
+        TF_VAR_STATE_FILE: "$ENV-${{ github.event.repository.name }}.tfstate"  
+      
+    - name: Terraform Format
+      run: terraform fmt
+      #continue-on-error: true
+      
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -var-file="$ENV/terraform.tfvars" -input=false -lock=false
+
+    - name: Terraform Apply
+      environment: "tf-apply"
+      #if: github.ref == 'refs/heads/master' && github.event_name == 'push'      
+      run: terraform apply -auto-approve -var-file="$ENV/terraform.tfvars" -input=false -lock=false
