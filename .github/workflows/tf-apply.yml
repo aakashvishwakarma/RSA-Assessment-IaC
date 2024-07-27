@@ -30,6 +30,9 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.8.2
+        terraform_wrapper: false
 
     - name: Run Terrascan
       id: terrascan
@@ -92,6 +95,9 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.8.2
+        terraform_wrapper: false
 
     - name: Run Terrascan
       id: terrascan
@@ -104,7 +110,7 @@ jobs:
         sarif_upload: true
 
     - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: terrascan.sarif
 
