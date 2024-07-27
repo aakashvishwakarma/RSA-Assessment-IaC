@@ -17,5 +17,3 @@ rds_private_subnet_names    = ["rds_subnet_1a","rds_subnet_1b"]
 web_public_subnet_cidr   	= ["10.0.0.0/24","10.0.1.0/24"]
 app_private_subnet_cidr     = ["10.0.2.0/24","10.0.3.0/24"]
 rds_private_subnet_cidr     = ["10.0.4.0/24","10.0.5.0/24"]
-web_servers_count           = 2
-app_servers_count		    = 2
