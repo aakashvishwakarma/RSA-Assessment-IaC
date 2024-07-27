@@ -2,9 +2,9 @@
 platform_name            = "aws"
 environment              = "dev"
 account                  = "devops"
-application_name         = "ceq-app"
-owner                    = "sean"
-app_id                   = "ceq-stage-app"
+application_name         = "rsa-asssessment"
+owner                    = "aakash"
+app_id                   = "rsa-assessment"
 deployment_role_arn      = "arn:aws:iam::345117372609:role/deployment-role"
 region                   = "us-east-1"
 enable_deletion_protection = false
