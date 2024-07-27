@@ -10,7 +10,6 @@ region                   = "us-east-1"
 
 ####################VPC, Public Subnets, Private Subnets###########################################################
 vpc_cidr                 	= "10.0.0.0/16"
-vpc_cidr_ss              	= "10.0.0.0/16"
 availability_zone        	= ["us-east-1a","us-east-1b"]
 web_public_subnet_names  	= ["web_subnet_1a","web_subnet_1b"]
 app_private_subnet_names    = ["app_subnet_1a","app_subnet_1b"]
