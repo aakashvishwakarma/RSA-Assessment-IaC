@@ -5,9 +5,8 @@ account                  = "devops"
 application_name         = "rsa-asssessment"
 owner                    = "aakash"
 app_id                   = "rsa-assessment"
-deployment_role_arn      = "arn:aws:iam::345117372609:role/deployment-role"
 region                   = "us-east-1"
-enable_deletion_protection = false
+
 
 ####################VPC, Public Subnets, Private Subnets###########################################################
 vpc_cidr                 	= "10.0.0.0/16"
