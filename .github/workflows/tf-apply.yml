@@ -8,6 +8,11 @@ on:
   workflow_dispatch:
 
 
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read   # This is required for actions/checkout
+  security-events: write
+
 env:
   ENV: dev
   BUCKET_NAME: aws-aakash-dev-devops-state
