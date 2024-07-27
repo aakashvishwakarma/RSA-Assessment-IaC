@@ -9,9 +9,9 @@ on:
 
 env:
   ENV: dev
-  BUCKET_NAME: aws-ceq-dev-devops-state
-  DYNAMO_DB : aws-ceq-dev-devops-statelock
-  REGION: us-east-1
+  BUCKET_NAME: aws-aakash-dev-devops-state
+  DYNAMO_DB : aws-aakash-dev-devops-statelock
+  REGION : us-east-1
 
 # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
 defaults:
