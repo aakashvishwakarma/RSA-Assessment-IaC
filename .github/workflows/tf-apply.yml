@@ -134,6 +134,5 @@ jobs:
 
 
     - name: Terraform Apply
-      environment: "tf-apply"
       #if: github.ref == 'refs/heads/master' && github.event_name == 'push'      
       run: terraform apply -auto-approve -var-file="$ENV/terraform.tfvars" -input=false -lock=false
