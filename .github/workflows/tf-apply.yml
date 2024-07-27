@@ -9,7 +9,6 @@ on:
 
 
 permissions:
-  id-token: write   # This is required for requesting the JWT
   contents: read   # This is required for actions/checkout
   security-events: write
 
@@ -19,7 +18,6 @@ env:
   DYNAMO_DB : aws-aakash-dev-devops-statelock
   REGION : us-east-1
 
-# Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
 defaults:
   run:
     shell: bash
@@ -33,12 +31,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4     
 
+    # Setup the Terraform 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.8.2
         terraform_wrapper: false
 
+    # Scan the code with terrascan
     - name: Run Terrascan
       id: terrascan
       uses: tenable/terrascan-action@main
@@ -49,17 +49,13 @@ jobs:
         only_warn: true
         sarif_upload: true
 
+    # upload the sarif report output
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: terrascan.sarif
 
-    # - name: Configure AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v3
-    #   with:
-        # role-to-assume: arn:aws:iam::654654150628:role/bain-oidc-role
-        # role-session-name: GitHub_to_AWS_via_FederatedOIDC
-        # aws-region: ${{env.REGION}}   
+  # Configuring aws creds to deploy to that specific cloud
     - name: Configure AWS credentials from Test account
       uses: aws-actions/configure-aws-credentials@v1
       with:
