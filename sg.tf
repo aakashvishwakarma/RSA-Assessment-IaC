@@ -5,7 +5,7 @@
 resource "aws_security_group" "web_alb_security_group" {
   name        = "Web-ALB-SG"
   description = "Web ALB Security Group - Allow limited external web traffic"
-  vpc_id      = aws_vpc.ceq_vpc.id
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port   = 80
@@ -41,7 +41,7 @@ resource "aws_security_group" "web_alb_security_group" {
 resource "aws_security_group" "ec2_public_security_group" {
   name        = "EC2-public-scg"
   description = "Internet reaching access for public ec2s"
-  vpc_id      = aws_vpc.ceq_vpc.id
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port       = 443
@@ -82,13 +82,13 @@ resource "aws_security_group" "ec2_public_security_group" {
     })
   )
 
-  depends_on = [aws_vpc.ceq_vpc, aws_security_group.web_alb_security_group]
+  depends_on = [aws_vpc.my_vpc, aws_security_group.web_alb_security_group]
 }
 
 resource "aws_security_group" "app_alb_security_group" {
   name        = "App-ALB-SG"
   description = "App ALB Security Group - Allow traffic from web ec2"
-  vpc_id      = aws_vpc.ceq_vpc.id
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port       = 80
@@ -124,7 +124,7 @@ resource "aws_security_group" "app_alb_security_group" {
 resource "aws_security_group" "ec2_private_security_group" {
   name        = "EC2-private-scg"
   description = "Only allow public SG resources to access private instances"
-  vpc_id      = aws_vpc.ceq_vpc.id
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port       = 0
@@ -154,14 +154,14 @@ resource "aws_security_group" "ec2_private_security_group" {
     })
   )
 
-  depends_on = [aws_vpc.ceq_vpc, aws_security_group.app_alb_security_group]
+  depends_on = [aws_vpc.my_vpc, aws_security_group.app_alb_security_group]
 }
 
 
 resource "aws_security_group" "db_security_groups" {
   name        = "db-sg"
   description = "Database Security Group"
-  vpc_id      = aws_vpc.ceq_vpc.id
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port   = 5432
