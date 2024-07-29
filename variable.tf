@@ -37,8 +37,6 @@ variable "vpc_cidr" {
   type = string
   description = "This is the  cidr range of the VPC to be used "
 }
-variable "vpc_cidr_ss" {}
-
 
 variable "web_public_subnet_names" {
   type = list
