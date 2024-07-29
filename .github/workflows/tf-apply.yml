@@ -33,7 +33,7 @@ jobs:
 
     # Setup the Terraform 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.8.2
         terraform_wrapper: false
@@ -95,7 +95,7 @@ jobs:
       uses: actions/checkout@v4 
 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.8.2
         terraform_wrapper: false
