@@ -1,11 +1,11 @@
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.ceq_vpc.id
+  vpc_id = aws_vpc.my_vpc.id
   tags = merge(local.common_tags,
     tomap({"Name"= "${var.platform_name}-${var.application_name}-${var.environment}-igw"
     })
   )
 
-  depends_on = [aws_vpc.ceq_vpc]
+  depends_on = [aws_vpc.my_vpc]
 }
 
 resource "aws_eip" "web_eip" {
