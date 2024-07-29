@@ -11,7 +11,7 @@ resource "aws_security_group" "web_alb_security_group" {
     from_port   = 80
     protocol    = "tcp"
     to_port     = 80
-    cidr_blocks = ["YOUR_IP_ADDRESS/32"]
+    cidr_blocks = ["117.235.129.87/32"]
     description = "Allow web traffic to load balancer from allowed IPs"
   }
 
@@ -20,7 +20,7 @@ resource "aws_security_group" "web_alb_security_group" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["YOUR_IP_ADDRESS/32"]
+    cidr_blocks = ["117.235.129.87/32"]
     description = "Allow HTTPS traffic to load balancer from allowed IP"
   }
 
@@ -65,7 +65,7 @@ resource "aws_security_group" "ec2_public_security_group" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    cidr_blocks     = ["YOUR_IP_ADDRESS/32"]
+    cidr_blocks     = ["117.235.129.87/32"]
     description     = "Allow SSH access from allowed IP"
 
   }
